@@ -1,0 +1,98 @@
+/* IDX Intelligence frontend — institutional light theme (matches template). */
+
+/* Tabular figures: numbers must not shift while streaming. */
+.font-label-numeric-lg, .font-label-numeric-md, .font-label-numeric-sm {
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+/* Material symbols baseline */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+  font-size: 18px; line-height: 1; display: inline-block; vertical-align: middle;
+}
+
+/* Institutional light scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f8fafc; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* View fade-in */
+.view { animation: viewfade .18s ease; }
+@keyframes viewfade { from { opacity: .35; } to { opacity: 1; } }
+
+/* Loading skeleton shimmer */
+.skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 37%, #f1f5f9 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease infinite;
+  border-radius: 4px;
+}
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: 0 0; } }
+
+/* Spinner */
+.spinner {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid #cbd5e1; border-top-color: #059669;
+  animation: spin .7s linear infinite; display: inline-block; vertical-align: -2px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Chat messages */
+.msg-user {
+  background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px;
+  padding: 8px 10px; font-size: 12px; line-height: 16px; color: #0f172a;
+}
+.msg-agent {
+  background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px;
+  padding: 10px; font-size: 12px; line-height: 17px; color: #334155;
+  box-shadow: 0 1px 2px 0 rgba(15,23,42,.04);
+}
+.msg-agent .toolchip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #f0fdf4; color: #047857; border: 1px solid #a7f3d0;
+  border-radius: 9999px; padding: 1px 8px; font-size: 10px; font-weight: 600;
+  margin: 0 4px 4px 0; font-family: "JetBrains Mono", monospace;
+}
+.msg-error {
+  background: #fff1f2; border: 1px solid #fecdd3; color: #9f1239;
+  border-radius: 6px; padding: 8px 10px; font-size: 12px;
+}
+
+/* History table */
+.h-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.h-table thead th {
+  background: #f8fafc; color: #64748b; text-transform: uppercase; letter-spacing: .05em;
+  font-size: 10px; font-weight: 600; text-align: left; padding: 7px 10px;
+  border-bottom: 1px solid #e2e8f0; font-family: "Geist", sans-serif;
+}
+.h-table tbody td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+.h-table tbody tr:hover { background: #f8fafc; }
+.h-table .num { font-family: "JetBrains Mono", monospace; font-size: 11px; }
+
+/* Report preview cards reuse .p-3 bg-white rounded border pattern inline. */
+.rp-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 12px; }
+.rp-h { font-size: 11px; font-weight: 700; color: #047857; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+.rp-kv { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; font-size: 12px; }
+.rp-kv .k { color: #64748b; }
+.rp-kv .v { font-family: "JetBrains Mono", monospace; font-size: 12px; color: #0f172a; text-align: right; }
+
+.pos { color: #059669; }
+.neg { color: #e11d48; }
+.mut { color: #64748b; }
+
+/* Agent-reply markdown (rendered by mdRender in app.js) */
+.md-body { font-size: 12px; line-height: 17px; color: #334155; }
+.md-body > div { margin: 0 0 4px 0; }
+.md-body .md-h {
+  font-weight: 700; color: #0f172a; margin: 8px 0 4px 0;
+  font-size: 12px; letter-spacing: .01em;
+}
+.md-body ul.md-ul, .md-body ol.md-ol { margin: 2px 0 6px 0; padding-left: 16px; }
+.md-body ul.md-ul li, .md-body ol.md-ol li { margin: 2px 0; }
+.md-body code {
+  font-family: "JetBrains Mono", monospace; font-size: 11px;
+  background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px;
+  padding: 0 4px; color: #0f172a;
+}
+.md-body strong { color: #0f172a; font-weight: 700; }

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>IDX Intelligence — Renewable-Energy Close-Price ML Terminal</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS (config copied from the provided template) -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: { extend: {
+      "colors": {
+        "surface-variant": "#f1f5f9","surface-bright": "#ffffff","on-surface-variant": "#475569",
+        "on-secondary-container": "#0369a1","secondary-container": "#e0f2fe","primary-container": "#dcfce7",
+        "tertiary-container": "#fee2e2","tertiary-fixed": "#ffe4e6","on-secondary": "#ffffff",
+        "on-tertiary": "#ffffff","on-tertiary-container": "#991b1b","tertiary": "#dc2626",
+        "surface-container-lowest": "#ffffff","on-tertiary-fixed": "#881337","on-primary-fixed-variant": "#065f46",
+        "secondary-fixed-dim": "#7dd3fc","on-error-container": "#991b1b","on-primary": "#ffffff",
+        "inverse-primary": "#34d399","inverse-surface": "#0f172a","on-secondary-fixed": "#0c4a6e",
+        "on-error": "#ffffff","primary-fixed-dim": "#6ee7b7","on-surface": "#0f172a",
+        "surface-container-low": "#f8fafc","primary-fixed": "#a7f3d0","surface-dim": "#f1f5f9",
+        "on-secondary-fixed-variant": "#0284c7","error": "#ef4444","background": "#f8fafc",
+        "surface-container": "#ffffff","outline-variant": "#e2e8f0","tertiary-fixed-dim": "#fecdd3",
+        "surface-container-highest": "#e2e8f0","secondary": "#0284c7","on-background": "#0f172a",
+        "primary": "#059669","on-primary-fixed": "#064e3b","outline": "#64748b",
+        "inverse-on-surface": "#f8fafc","surface-container-high": "#f1f5f9","surface": "#f8fafc",
+        "on-primary-container": "#065f46","on-tertiary-fixed-variant": "#be123c","error-container": "#fee2e2",
+        "secondary-fixed": "#bae6fd","surface-tint": "#059669"
+      },
+      "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+      "spacing": { "space-sm":"0.5rem","margin":"1rem","space-xs":"0.25rem","space-lg":"1.25rem",
+        "gutter":"0.75rem","margin-desktop":"1.5rem","gutter-desktop":"1rem","space-xl":"2rem","space-md":"0.75rem" },
+      "fontFamily": {
+        "label-tag":["Geist"],"body-lg":["Geist"],"label-numeric-lg":["JetBrains Mono"],
+        "label-numeric-md":["JetBrains Mono"],"label-numeric-sm":["JetBrains Mono"],
+        "body-md":["Geist"],"body-sm":["Geist"],"headline-lg":["Geist"],"headline-xl":["Geist"],"headline-sm":["Geist"]
+      },
+      "fontSize": {
+        "label-tag":["10px",{"lineHeight":"12px","letterSpacing":"0.05em","fontWeight":"600"}],
+        "body-lg":["15px",{"lineHeight":"22px","letterSpacing":"-0.01em","fontWeight":"400"}],
+        "label-numeric-lg":["20px",{"lineHeight":"24px","letterSpacing":"-0.02em","fontWeight":"600"}],
+        "label-numeric-md":["13px",{"lineHeight":"16px","letterSpacing":"-0.01em","fontWeight":"500"}],
+        "label-numeric-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.02em","fontWeight":"400"}],
+        "body-md":["13px",{"lineHeight":"18px","letterSpacing":"0em","fontWeight":"400"}],
+        "body-sm":["12px",{"lineHeight":"16px","letterSpacing":"0em","fontWeight":"400"}],
+        "headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"600"}],
+        "headline-xl":["36px",{"lineHeight":"44px","letterSpacing":"-0.025em","fontWeight":"600"}],
+        "headline-sm":["18px",{"lineHeight":"24px","letterSpacing":"-0.015em","fontWeight":"500"}]
+      }
+    } }
+  }
+</script>
+<!-- Charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/assets/styles.css?v=20261002">
+</head>
+<body class="bg-[#f8fafc] text-on-surface antialiased overflow-x-hidden min-h-screen flex flex-col font-body-md text-body-md">
+
+<!-- ===================== TOP APP BAR ===================== -->
+<header class="h-12 shrink-0 bg-white border-b border-slate-200 flex items-center justify-between px-4 gap-4">
+  <div class="flex items-center gap-2.5 min-w-0">
+    <span class="material-symbols-outlined text-primary text-xl">candlestick_chart</span>
+    <span class="font-headline-sm font-bold text-slate-900 tracking-tight whitespace-nowrap">IDX Intelligence</span>
+    <span class="hidden md:inline px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-tag text-label-tag font-semibold whitespace-nowrap">FCM-LSTM Close Engine</span>
+  </div>
+  <!-- View nav -->
+  <nav class="flex items-center bg-slate-100 rounded p-0.5 border border-slate-200 font-body-sm text-body-sm">
+    <button data-view="terminal" class="nav-tab px-3 py-1 rounded bg-white text-emerald-800 font-bold shadow-sm">Terminal</button>
+    <button data-view="reports" class="nav-tab px-3 py-1 rounded text-slate-600 hover:text-slate-900">Reports</button>
+    <button data-view="history" class="nav-tab px-3 py-1 rounded text-slate-600 hover:text-slate-900">History</button>
+  </nav>
+  <!-- Replay + data currency -->
+  <div class="flex items-center gap-2">
+    <span id="data-date" class="hidden sm:flex items-center gap-1 font-label-numeric-sm text-[10px] text-slate-500">
+      <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span><span id="data-date-text">…</span>
+    </span>
+    <label class="flex items-center gap-1.5 font-body-sm text-body-sm text-slate-600" title="Historical Replay: analyse as of a past date">
+      <span class="material-symbols-outlined text-sky-700 text-base">history_toggle_off</span>
+      <span class="hidden lg:inline">Replay</span>
+      <input type="checkbox" id="replay-toggle" class="rounded border-slate-300 text-sky-600 focus:ring-sky-500 h-3.5 w-3.5">
+    </label>
+    <input type="date" id="replay-date" class="bg-white border border-slate-200 focus:border-sky-500 focus:ring-0 text-slate-700 text-body-sm px-2 py-0.5 rounded font-label-numeric-sm" disabled>
+  </div>
+</header>
+<!-- Replay banner -->
+<div id="replay-banner" class="hidden shrink-0 bg-sky-50 border-b border-sky-200 text-sky-800 px-4 py-1.5 text-body-sm flex items-center gap-2">
+  <span class="material-symbols-outlined text-base">history</span>
+  <span><b>Historical Replay active</b> — analysing as of <span id="replay-label" class="font-label-numeric-sm font-bold"></span>. Only data up to this date feeds the model; later actuals are used solely to evaluate the forecast.</span>
+  <button id="replay-exit" class="ml-auto text-sky-700 underline text-body-sm">Exit replay</button>
+</div>
+
+<!-- ===================== MAIN 3-COLUMN WORKSPACE ===================== -->
+<main class="flex-1 w-full grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_370px] bg-slate-100 overflow-hidden">
+
+  <!-- ============ COLUMN 1: WATCHLIST ============ -->
+  <aside class="flex flex-col h-full border-r border-slate-200 bg-white shrink-0 overflow-hidden">
+    <div class="p-space-sm border-b border-slate-200 bg-slate-50">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-primary text-base">table_rows</span>
+          <span class="font-headline-sm text-body-md font-semibold text-slate-900">Stock Universe (9)</span>
+        </div>
+        <span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-numeric-sm text-[10px] font-semibold">Close Price Model</span>
+      </div>
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-2 top-2 text-slate-400 text-sm">search</span>
+        <input id="watch-search" class="w-full bg-white border border-slate-200 focus:border-emerald-500 focus:ring-0 text-slate-900 text-body-sm pl-7 pr-3 py-1 rounded placeholder:text-slate-400 font-body-sm shadow-sm" placeholder="Search ticker or sector..." type="text">
+      </div>
+    </div>
+    <div id="watchlist" class="flex-1 overflow-y-auto divide-y divide-slate-100"></div>
+    <div class="p-space-sm bg-slate-50 border-t border-slate-200 font-label-numeric-sm text-[10px] text-slate-500 flex items-center justify-between">
+      <span class="flex items-center gap-1"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Close Series Verified (EOD)</span>
+      <span id="watch-run">Run: …</span>
+    </div>
+  </aside>
+
+  <!-- ============ COLUMN 2: CENTER VIEWS ============ -->
+  <section class="flex flex-col h-full overflow-y-auto border-r border-slate-200 bg-white">
+
+    <!-- ---------- VIEW: TERMINAL ---------- -->
+    <div id="view-terminal" class="view">
+      <!-- Stock overview header -->
+      <div class="p-space-md bg-slate-50/70 border-b border-slate-200">
+        <div class="flex flex-wrap items-center justify-between gap-space-md">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 id="t-ticker" class="font-headline-lg text-headline-lg font-bold text-slate-900 tracking-tight">—</h1>
+              <span id="t-energy" class="px-2 py-0.5 rounded bg-slate-200/80 text-slate-700 font-label-tag text-label-tag font-semibold">—</span>
+              <span id="t-cluster" class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300 font-label-tag text-label-tag font-semibold">—</span>
+            </div>
+            <p id="t-subtitle" class="font-body-sm text-body-sm text-slate-500 mt-0.5">—</p>
+          </div>
+          <div class="flex items-baseline gap-space-md">
+            <div class="text-right">
+              <div class="text-[10px] font-label-tag text-slate-500 uppercase tracking-wider font-semibold">Last Close Price</div>
+              <div id="t-lastclose" class="font-label-numeric-lg text-2xl font-bold text-slate-900">—</div>
+              <div id="t-change" class="font-label-numeric-sm text-label-numeric-sm flex items-center justify-end font-bold">—</div>
+            </div>
+            <div class="hidden sm:block text-right pl-space-md border-l border-slate-200 text-[11px] text-slate-500 font-label-numeric-sm">
+              <div id="t-eod">EOD Close Market: …</div>
+              <div class="text-emerald-700 font-medium">Model Input: Close Only</div>
+            </div>
+          </div>
+        </div>
+        <div id="t-kpis" class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-space-md pt-space-sm border-t border-slate-200 font-label-numeric-sm text-label-numeric-sm"></div>
+      </div>
+
+      <!-- Price chart -->
+      <div class="p-space-md border-b border-slate-200 bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-space-sm flex-wrap">
+            <span class="font-headline-sm text-body-lg font-bold text-slate-900">Daily Close Price Series &amp; FCM Clustering</span>
+            <span class="px-1.5 py-0.5 rounded bg-sky-50 text-secondary border border-sky-200 text-[10px] font-label-tag font-semibold">k=3 Partition U</span>
+            <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-label-tag font-medium">EOD Close Trained</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="hidden sm:flex items-center gap-2 bg-slate-50 px-2.5 py-1 rounded border border-slate-200 text-[11px] font-body-sm text-slate-600 shadow-sm">
+              <span class="text-emerald-700 flex items-center gap-1 font-semibold"><span class="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>Daily Close (EOD)</span>
+              <span class="text-sky-700 flex items-center gap-1 font-semibold"><span class="h-1.5 w-1.5 rounded-full bg-sky-500"></span>Model Predicted (T+1)</span>
+            </div>
+            <div class="flex items-center bg-slate-100 rounded p-0.5 border border-slate-200 font-label-numeric-sm text-label-numeric-sm" id="t-range-tabs">
+              <button data-range="1M" class="px-2 py-0.5 text-slate-600 hover:text-slate-900">1M</button>
+              <button data-range="3M" class="px-2 py-0.5 text-slate-600 hover:text-slate-900">3M</button>
+              <button data-range="6M" class="px-2 py-0.5 bg-white text-emerald-800 font-bold rounded shadow-sm">6M</button>
+              <button data-range="1Y" class="px-2 py-0.5 text-slate-600 hover:text-slate-900">1Y</button>
+              <button data-range="ALL" class="px-2 py-0.5 text-slate-600 hover:text-slate-900">ALL</button>
+            </div>
+          </div>
+        </div>
+        <div class="relative w-full h-[280px] bg-slate-50/50 rounded border border-slate-200 p-2 shadow-sm">
+          <canvas id="chart-price"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ---------- VIEW: REPORTS ---------- -->
+    <div id="view-reports" class="view hidden p-space-md space-y-space-md">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-xl">description</span>
+        <span class="font-headline-sm text-body-lg font-bold text-slate-900">Report Builder</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3 p-space-md bg-white rounded border border-slate-200 shadow-sm">
+        <label class="block"><span class="text-[10px] font-label-tag text-slate-500 uppercase font-semibold">Stock</span>
+          <select id="r-stock" class="mt-1 w-full bg-white border border-slate-200 focus:border-emerald-500 focus:ring-0 text-slate-900 text-body-sm rounded px-2 py-1.5"></select></label>
+        <label class="block"><span class="text-[10px] font-label-tag text-slate-500 uppercase font-semibold">Report type</span>
+          <select id="r-type" class="mt-1 w-full bg-white border border-slate-200 focus:border-emerald-500 focus:ring-0 text-slate-900 text-body-sm rounded px-2 py-1.5">
+            <option value="daily">Daily</option><option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option><option value="yearly">Yearly</option>
+            <option value="custom">Custom range</option>
+          </select></label>
+        <label class="block" id="r-start-wrap"><span class="text-[10px] font-label-tag text-slate-500 uppercase font-semibold">Start</span>
+          <input type="date" id="r-start" class="mt-1 w-full bg-white border border-slate-200 focus:border-emerald-500 focus:ring-0 text-slate-900 text-body-sm rounded px-2 py-1.5 font-label-numeric-sm"></label>
+        <label class="block" id="r-end-wrap"><span class="text-[10px] font-label-tag text-slate-500 uppercase font-semibold">End</span>
+          <input type="date" id="r-end" class="mt-1 w-full bg-white border border-slate-200 focus:border-emerald-500 focus:ring-0 text-slate-900 text-body-sm rounded px-2 py-1.5 font-label-numeric-sm"></label>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="r-generate" class="px-3 py-1.5 rounded bg-[#0f172a] text-white text-body-sm font-semibold hover:bg-[#1e293b] flex items-center gap-1.5"><span class="material-symbols-outlined text-base">analytics</span>Generate Analysis</button>
+        <button id="r-pdf" class="px-3 py-1.5 rounded bg-primary text-white text-body-sm font-semibold hover:bg-emerald-700 flex items-center gap-1.5 disabled:opacity-40" disabled><span class="material-symbols-outlined text-base">picture_as_pdf</span>Generate PDF</button>
+        <button id="r-email" class="px-3 py-1.5 rounded bg-white border border-slate-200 text-slate-700 text-body-sm font-medium hover:bg-slate-50 flex items-center gap-1.5 disabled:opacity-40" disabled><span class="material-symbols-outlined text-base">mail</span>Email Report</button>
+        <span id="r-status" class="text-body-sm text-slate-500"></span>
+      </div>
+      <div id="r-email-row" class="hidden flex items-center gap-2">
+        <input id="r-email-input" type="email" placeholder="recipient@example.com" class="bg-white border border-slate-200 focus:border-emerald-500 focus:ring-0 text-slate-900 text-body-sm rounded px-2 py-1.5 w-72">
+        <button id="r-email-send" class="px-3 py-1.5 rounded bg-primary text-white text-body-sm font-semibold hover:bg-emerald-700">Send</button>
+      </div>
+      <div id="r-preview" class="space-y-space-md"></div>
+    </div>
+
+    <!-- ---------- VIEW: HISTORY ---------- -->
+    <div id="view-history" class="view hidden p-space-md">
+      <div class="flex items-center justify-between mb-space-md">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-xl">history</span>
+          <span class="font-headline-sm text-body-lg font-bold text-slate-900">Report History</span>
+        </div>
+        <button id="h-refresh" class="px-2.5 py-1 rounded bg-white border border-slate-200 text-slate-600 text-body-sm hover:bg-slate-50 flex items-center gap-1"><span class="material-symbols-outlined text-base">refresh</span>Refresh</button>
+      </div>
+      <div id="h-table" class="bg-white rounded border border-slate-200 shadow-sm overflow-hidden"></div>
+    </div>
+  </section>
+
+  <!-- ============ COLUMN 3: QWEN AGENT ============ -->
+  <aside class="flex flex-col h-full border-l border-slate-200 bg-slate-50 shrink-0 overflow-hidden">
+    <div class="p-space-sm bg-white border-b border-slate-200 flex items-center justify-between shadow-sm">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-xl">smart_toy</span>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-headline-sm text-body-md font-bold text-slate-900">IDX Agent AI</span>
+            <span id="agent-dot" class="h-2 w-2 rounded-full bg-slate-300"></span>
+          </div>
+          <span id="agent-model" class="font-label-tag text-[10px] text-emerald-700 uppercase tracking-wider font-bold">Qwen Agent</span>
+        </div>
+      </div>
+      <button id="chat-clear" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 font-label-numeric-sm text-label-numeric-sm border border-slate-200 transition-colors">Clear Context</button>
+    </div>
+    <div id="chat-activity" class="px-space-sm py-1.5 bg-slate-100/70 border-b border-slate-200 flex flex-wrap items-center gap-x-3 gap-y-1 font-label-numeric-sm text-[10px] text-slate-600 min-h-[26px]"></div>
+    <div id="chat-log" class="flex-1 overflow-y-auto p-space-sm space-y-space-md"></div>
+    <div class="p-space-sm bg-white border-t border-slate-200">
+      <div class="flex flex-wrap gap-1.5 mb-2" id="chat-quick"></div>
+      <div class="relative flex items-center">
+        <input id="chat-input" class="w-full bg-slate-50 border border-slate-200 focus:border-emerald-500 focus:ring-0 text-slate-900 text-body-sm pl-3 pr-12 py-2 rounded placeholder:text-slate-400 font-body-sm shadow-sm" placeholder="Ask the agent about prices, predictions, reports..." type="text">
+        <button id="chat-send" class="absolute right-1.5 p-1 rounded bg-primary text-white hover:bg-emerald-700 transition-colors shadow-sm"><span class="material-symbols-outlined text-sm font-bold">arrow_forward</span></button>
+      </div>
+      <div class="mt-1 flex items-center justify-between text-[10px] text-slate-500 font-label-numeric-sm">
+        <span>Qwen agent • tool-calling</span><span>Historical dataset (not live)</span>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<script src="/assets/app.js?v=20261002"></script>
+</body>
+</html>
