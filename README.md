@@ -5,6 +5,9 @@ Exchange (IDX), built on top of a set of pre-trained **FCM-LSTM** models. It add
 **tool-calling Qwen AI agent**, period **reporting with PDF export and SMTP email delivery**,
 a persistent **report history**, and a leak-free **Historical Replay** demo mode.
 
+# Demo
+https://drive.google.com/file/d/1ixo9Je3zAFVH6mVpsnENQhTepNdNUxMu/view
+
 > Historical dataset only (not a live IDX feed). For education/portfolio purposes, not
 > investment advice.
 
